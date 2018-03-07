@@ -1,22 +1,19 @@
 package ruiProcessing;
 
-import java.util.Random;
-
 import processing.core.PApplet;
 import processing.core.PConstants;
 
 public class Planet{
-	private int radius;
+	private float radius;
 	private float angle;
 	private float distance;
 	private PApplet parent; // The parent PApplet that we will render ourselves onto
 	private float orbitSpeed;
 	
 	public Planet(float radius, float distance, PApplet pApplet) {
-		this.radius = new Random().nextInt(12) % 5 + 10;
+		this.radius = pApplet.random(11.0f, 8.0f);
 		this.distance = distance;
 		this.angle = pApplet.random(PConstants.TWO_PI);
-//		this.orbitSpeed = new Random().nextFloat() % 0.14f + 0.11f;
 		this.orbitSpeed = pApplet.random(0.01f, 0.09f);
 		this.parent = pApplet;
 	}
