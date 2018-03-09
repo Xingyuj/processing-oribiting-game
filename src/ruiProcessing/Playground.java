@@ -106,9 +106,9 @@ public class Playground extends PApplet {
 	
 	public void displayScoreboard(){
 		pushMatrix();
-		textSize(32);
-		text("Flames:" + flames, 10, 30); 
+		textSize(25);
 		fill(0, 102, 153);
+		text("Flames:" + flames, 10, 30); 
 		text("Hit:" + hits, 10, 60);
 		popMatrix();
 	}
@@ -121,6 +121,13 @@ public class Playground extends PApplet {
 		text("Number of Flames left: " + flames, 100, 180);
 		text("Number of planets left: " + (5 - hits), 100, 210);
 		text("Number of Hits: " + hits, 100, 240);
+		popMatrix();
+	}
+	
+	private void drawEarth(){
+		pushMatrix();
+		fill(51, 102, 253);
+		arc(200, 400, 400, 80, PI, TWO_PI, OPEN);
 		popMatrix();
 	}
 
@@ -157,9 +164,11 @@ public class Playground extends PApplet {
 						continue;
 					}
 				}
-				planet.show();
+				if(!planetsRemoved.contains(planet)){
+					planet.show();
+				}
 			}
-			planets.removeAll(planetsRemoved);
+			drawEarth();
 		}
 	}
 

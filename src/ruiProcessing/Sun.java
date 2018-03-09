@@ -9,8 +9,6 @@ public class Sun {
 	private boolean fired;
 	private int trajectoryHead;
 	private int trajectoryRear;
-	private Bullet[] bullets;
-	private int bulletCapacity;
 	private PApplet parent; // The parent PApplet that we will render ourselves onto
 	
 	public int getPosition() {
@@ -26,7 +24,6 @@ public class Sun {
 		this.glowDiameter = glowDiameter;
 		this.parent = pApplet;
 		this.position = 200;
-		this.bulletCapacity = 5;
 	}
 	
 	public void fireSunWrath() {
@@ -53,10 +50,10 @@ public class Sun {
 		parent.translate(position, 0);
     	parent.noStroke();
 		parent.ellipseMode(parent.CENTER);
-		parent.ellipse(0, glowDiameter/2, glowDiameter, glowDiameter);  // Draw white ellipse using RADIUS mode
-    	parent.fill(235, 252, 45);
-    	parent.ellipse(0, glowDiameter/2, diameter, diameter);  // Draw gray ellipse using CENTER mode
-    	parent.fill(246, 255, 158);  // Set fill to white
+    	parent.fill(255, 230, 180); 
+		parent.ellipse(0, glowDiameter/2, glowDiameter, glowDiameter);
+    	parent.fill(255, 255, 100);
+    	parent.ellipse(0, glowDiameter/2, diameter, diameter);
     	parent.popMatrix();
 	}
 }

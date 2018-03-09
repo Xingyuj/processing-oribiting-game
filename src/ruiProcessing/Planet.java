@@ -42,7 +42,7 @@ public class Planet {
 
 	public void showOrbitCircle() {
 		parent.pushMatrix();
-		parent.stroke(1);
+		parent.stroke(0, 255, 255);
 		parent.noFill();
 		parent.translate(200, 200);
 		parent.ellipse(0, 0, distance * 2, distance * 2);
@@ -67,8 +67,8 @@ public class Planet {
 		parent.rotate(angle);
 		parent.translate(distance, 0);
 		parent.ellipse(0, 0, radius * 2, radius * 2);
-		parent.popMatrix();
 		this.orbit();
+		parent.popMatrix();
 	}
 
 	public double getX() {
