@@ -13,7 +13,8 @@ public class Playground extends PApplet {
 	private int planetAmount = 5;
 	private int planetInteval = 24;
 	private Bullet bullet = new Bullet(this);
-//	private boolean hasBullet;
+	private int flames;
+	private int hits;
 
 	public Playground() {
 		this.width = 400;
@@ -21,7 +22,8 @@ public class Playground extends PApplet {
 		this.sun = new Sun(25, 50, this);
 		this.planets = new ArrayList<Planet>();
 		this.planetsRemoved = new ArrayList<Planet>();
-//		this.hasBullet = false;
+		this.flames = 5;
+		this.hits = 0;
 	}
 
 	private void spawnPlanets(int total) {
@@ -101,40 +103,64 @@ public class Playground extends PApplet {
 			return false;
 		}
 	}
+	
+	public void displayScoreboard(){
+		pushMatrix();
+		textSize(32);
+		text("Flames:" + flames, 10, 30); 
+		fill(0, 102, 153);
+		text("Hit:" + hits, 10, 60);
+		popMatrix();
+	}
+	
+	public void displayGameover(){
+		pushMatrix();
+		textSize(20);
+		text("Game is Over", 100, 150); 
+		fill(0, 102, 153);
+		text("Number of Flames left: " + flames, 100, 180);
+		text("Number of planets left: " + (5 - hits), 100, 210);
+		text("Number of Hits: " + hits, 100, 240);
+		popMatrix();
+	}
 
 	public void draw() {
 		background(0, 204, 255);
-		
-		if (keyPressed && keyCode == LEFT && sun.getPosition() > 25) {
-			sun.move(-1);
-		} else if (keyPressed && keyCode == RIGHT && sun.getPosition() < 375){
-			sun.move(1);
-		}
-		sun.show();
-
-		if (!bullet.isFiring() && keyPressed && keyCode == DOWN) {
-			bullet.setStartLocation(sun.getPosition(), 40);
-		}
-		if (bullet.isFiring()) {
-			bullet.update();
-			bullet.show();
-		}
-		
-		for (Planet planet : planets) {
-			planet.showOrbitCircle();
-			if(bullet.isFiring() && this.collisionDetection(bullet.getX(), bullet.getY(), bullet.getW(), bullet.getH(), planet.getX(), planet.getY(), planet.getRadius()*2)){
-				if(!planet.isGotHit()){
-					planet.setGotHit(true);
-				} else if (planet.getLifeTime() <= 0) {
-					planetsRemoved.add(planet);
-					continue;
-				}
+		if(flames <= 0 && !bullet.isFiring() || hits >= 5){
+			displayGameover();
+		} else {
+			displayScoreboard();
+			if (keyPressed && keyCode == LEFT && sun.getPosition() > 25) {
+				sun.move(-1);
+			} else if (keyPressed && keyCode == RIGHT && sun.getPosition() < 375){
+				sun.move(1);
 			}
-			planet.show();
+			sun.show();
+
+			if (!bullet.isFiring() && keyPressed && keyCode == DOWN) {
+				bullet.setStartLocation(sun.getPosition(), 40);
+				flames--;
+			}
+			if (bullet.isFiring()) {
+				bullet.update();
+				bullet.show();
+			}
+			
+			for (Planet planet : planets) {
+				planet.showOrbitCircle();
+				if(bullet.isFiring() && this.collisionDetection(bullet.getX(), bullet.getY(), bullet.getW(), bullet.getH(), planet.getX(), planet.getY(), planet.getRadius()*2)){
+					if(!planet.isGotHit()){
+						planet.setGotHit(true);
+						hits++;
+					} else if (planet.getLifeTime() <= 0) {
+						planetsRemoved.add(planet);
+						continue;
+					}
+				}
+				planet.show();
+			}
+			planets.removeAll(planetsRemoved);
 		}
-		
-		planets.removeAll(planetsRemoved);
-		
 	}
 
 }
