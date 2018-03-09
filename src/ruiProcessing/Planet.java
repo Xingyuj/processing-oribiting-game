@@ -1,5 +1,7 @@
 package ruiProcessing;
 
+import java.util.Random;
+
 import processing.core.PApplet;
 import processing.core.PConstants;
 
@@ -11,9 +13,10 @@ public class Planet {
 	private PApplet parent; // The parent PApplet that we will render ourselves
 							// onto
 	private float orbitSpeed;
-	private int color;
+	private int[] color;
 	private boolean gotHit;
 	private int lifeTime;
+	private boolean directionClockwise;
 
 	public Planet(float radius, float distance, PApplet pApplet) {
 		this.radius = pApplet.random(11.0f, 8.0f);
@@ -21,13 +24,18 @@ public class Planet {
 		this.angle = pApplet.random(PConstants.TWO_PI);
 		this.orbitSpeed = pApplet.random(0.01f, 0.09f);
 		this.parent = pApplet;
-		this.color = 100;
+		this.color = new int[]{(int) pApplet.random(255), (int) pApplet.random(255), (int) pApplet.random(255)};
 		this.gotHit = false;
 		this.lifeTime = 10;
+		this.directionClockwise = new Random().nextBoolean();
 	}
 
 	private void orbit() {
-		this.angle += this.orbitSpeed;
+		if(directionClockwise){
+			this.angle += this.orbitSpeed;
+		} else {
+			this.angle -= this.orbitSpeed;
+		}
 		this.x = 200 + Math.cos(angle) * this.distance;
 		this.y = 200 + Math.sin(angle) * this.distance;
 	}
@@ -39,7 +47,6 @@ public class Planet {
 		parent.translate(200, 200);
 		parent.ellipse(0, 0, distance * 2, distance * 2);
 		parent.popMatrix();
-
 	}
 
 	public void show() {
@@ -55,7 +62,7 @@ public class Planet {
 				return;
 			}
 		} else {
-			parent.fill(color);
+			parent.fill(color[0], color[1], color[2]);
 		}
 		parent.rotate(angle);
 		parent.translate(distance, 0);
@@ -86,14 +93,6 @@ public class Planet {
 
 	public void setRadius(float radius) {
 		this.radius = radius;
-	}
-
-	public int getColor() {
-		return color;
-	}
-
-	public void setColor(int color) {
-		this.color = color;
 	}
 
 	public boolean isGotHit() {
