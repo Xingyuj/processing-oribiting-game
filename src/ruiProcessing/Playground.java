@@ -1,30 +1,34 @@
 package ruiProcessing;
 
+import java.util.ArrayList;
+
 import processing.core.PApplet;
 
 public class Playground extends PApplet {
 	private int width;
 	private int height;
 	private Sun sun;
-	private Planet[] planets;
+	private ArrayList<Planet> planets;
+	private ArrayList<Planet> planetsRemoved;
 	private int planetAmount = 5;
 	private int planetInteval = 24;
 	private Bullet bullet = new Bullet(this);
-	private boolean hasBullet;
+//	private boolean hasBullet;
 
 	public Playground() {
 		this.width = 400;
 		this.height = 400;
 		this.sun = new Sun(25, 50, this);
-		this.planets = new Planet[planetAmount];
-		this.hasBullet = false;
+		this.planets = new ArrayList<Planet>();
+		this.planetsRemoved = new ArrayList<Planet>();
+//		this.hasBullet = false;
 	}
 
 	private void spawnPlanets(int total) {
-		for (int i = 0; i < planets.length; i++) {
+		for (int i = 0; i < planetAmount; i++) {
 			float r = 30;
 			float d = (i + 1) * planetInteval;
-			planets[i] = new Planet(r, d, this);
+			planets.add(new Planet(r, d, this));
 		}
 	}
 
@@ -100,25 +104,36 @@ public class Playground extends PApplet {
 
 	public void draw() {
 		background(0, 204, 255);
+		
+		if (keyPressed && keyCode == LEFT && sun.getPosition() > 25) {
+			sun.move(-1);
+		} else if (keyPressed && keyCode == RIGHT && sun.getPosition() < 375){
+			sun.move(1);
+		}
 		sun.show();
 
-		if (keyPressed && keyCode == DOWN) {
+		if (!bullet.isFiring() && keyPressed && keyCode == DOWN) {
 			bullet.setStartLocation(sun.getPosition(), 40);
-			hasBullet = true;
 		}
-		if (hasBullet) {
+		if (bullet.isFiring()) {
 			bullet.update();
 			bullet.show();
 		}
 		
-		for (int i = 0; i < planets.length; i++) {
-			planets[i].showOrbitCircle();
-			if(hasBullet && this.collisionDetection(bullet.getX(), bullet.getY(), bullet.getW(), bullet.getH(), planets[i].getX(), planets[i].getY(), planets[i].getRadius()*2)){
-				planets[i].setColor(500);;
+		for (Planet planet : planets) {
+			planet.showOrbitCircle();
+			if(bullet.isFiring() && this.collisionDetection(bullet.getX(), bullet.getY(), bullet.getW(), bullet.getH(), planet.getX(), planet.getY(), planet.getRadius()*2)){
+				if(!planet.isGotHit()){
+					planet.setGotHit(true);
+				} else if (planet.getLifeTime() <= 0) {
+					planetsRemoved.add(planet);
+					continue;
+				}
 			}
-			planets[i].show();
+			planet.show();
 		}
-
+		
+		planets.removeAll(planetsRemoved);
 		
 	}
 

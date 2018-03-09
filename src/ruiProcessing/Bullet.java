@@ -26,7 +26,7 @@ public class Bullet {
 			}
 			y += speed;
 			
-			if (y > 400) {
+			if (y > 420) {
 				speed = 0;
 				firing = false;
 			}
@@ -77,6 +77,14 @@ public class Bullet {
 
 	public void setH(float h) {
 		this.h = h;
+	}
+
+	public boolean isFiring() {
+		return firing;
+	}
+
+	public void setFiring(boolean firing) {
+		this.firing = firing;
 	}
 	
 }

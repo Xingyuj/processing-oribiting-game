@@ -44,13 +44,18 @@ public class Sun {
 		fired = false;
 	}
 	
+	public void move(int steps){
+		this.position += steps;
+	}
+	
 	public void show() {
     	parent.pushMatrix();
-		parent.noStroke();
+		parent.translate(position, 0);
+    	parent.noStroke();
 		parent.ellipseMode(parent.CENTER);
-		parent.ellipse(position, glowDiameter/2, glowDiameter, glowDiameter);  // Draw white ellipse using RADIUS mode
+		parent.ellipse(0, glowDiameter/2, glowDiameter, glowDiameter);  // Draw white ellipse using RADIUS mode
     	parent.fill(235, 252, 45);
-    	parent.ellipse(position, glowDiameter/2, diameter, diameter);  // Draw gray ellipse using CENTER mode
+    	parent.ellipse(0, glowDiameter/2, diameter, diameter);  // Draw gray ellipse using CENTER mode
     	parent.fill(246, 255, 158);  // Set fill to white
     	parent.popMatrix();
 	}
