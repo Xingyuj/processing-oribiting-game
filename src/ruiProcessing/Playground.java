@@ -155,16 +155,16 @@ public class Playground extends PApplet {
 			
 			for (Planet planet : planets) {
 				planet.showOrbitCircle();
-				if(bullet.isFiring() && this.collisionDetection(bullet.getX(), bullet.getY(), bullet.getW(), bullet.getH(), planet.getX(), planet.getY(), planet.getRadius()*2)){
-					if(!planet.isGotHit()){
-						planet.setGotHit(true);
-						hits++;
-					} else if (planet.getLifeTime() <= 0) {
-						planetsRemoved.add(planet);
-						continue;
-					}
-				}
 				if(!planetsRemoved.contains(planet)){
+					if(bullet.isFiring() && this.collisionDetection(bullet.getX(), bullet.getY(), bullet.getW(), bullet.getH(), planet.getX(), planet.getY(), planet.getRadius()*2)){
+						if(!planet.isGotHit()){
+							planet.setGotHit(true);
+							hits++;
+						} else if (planet.getLifeTime() <= 0) {
+							planetsRemoved.add(planet);
+							continue;
+						}
+					}
 					planet.show();
 				}
 			}
